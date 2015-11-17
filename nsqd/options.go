@@ -21,6 +21,14 @@ type Options struct {
 	NSQLookupdTCPAddresses []string `flag:"lookupd-tcp-address" cfg:"nsqlookupd_tcp_addresses"`
 	AuthHTTPAddresses      []string `flag:"auth-http-address" cfg:"auth_http_addresses"`
 
+	GossipAddress          string        `flag:"gossip-address"`
+	GossipSeedAddresses    []string      `flag:"gossip-seed-address"`
+	GossipRegossipInterval time.Duration `flag:"gossip-regossip-interval"`
+	GossipProbeInterval    time.Duration
+	GossipSuspicionMult    int
+	GossipReapInterval     time.Duration
+	GossipReconnectTimeout time.Duration
+
 	// diskqueue options
 	DataPath        string        `flag:"data-path"`
 	MemQueueSize    int64         `flag:"mem-queue-size"`
@@ -131,5 +139,11 @@ func NewOptions() *Options {
 		TLSMinVersion: tls.VersionTLS10,
 
 		Logger: log.New(os.Stderr, "[nsqd] ", log.Ldate|log.Ltime|log.Lmicroseconds),
+
+		GossipRegossipInterval: 60 * time.Second,
+		GossipProbeInterval:    1 * time.Second,
+		GossipSuspicionMult:    5,
+		GossipReapInterval:     15 * time.Second,
+		GossipReconnectTimeout: 1 * time.Hour,
 	}
 }

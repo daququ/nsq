@@ -93,6 +93,11 @@ func nsqFlagset() *flag.FlagSet {
 	lookupdTCPAddrs := app.StringArray{}
 	flagSet.Var(&lookupdTCPAddrs, "lookupd-tcp-address", "lookupd TCP address (may be given multiple times)")
 
+	flagSet.String("gossip-address", "", "<addr>:<port> to listen on for gossip (reasonable default: 0.0.0.0:7946)")
+	seedNodeAddrs := app.StringArray{}
+	flagSet.Var(&seedNodeAddrs, "gossip-seed-address", "TCP address of an nsqd serving as a seed node to bootstrap gossip protocol (may be given multiple times)")
+	flagSet.Duration("gossip-regossip-interval", 60*time.Second, "how often node will re-gossip topic and channel information with known peers")
+
 	// diskqueue options
 	flagSet.String("data-path", "", "path to store disk-backed messages")
 	flagSet.Int64("mem-queue-size", 10000, "number of messages to keep in memory (per topic/channel)")
